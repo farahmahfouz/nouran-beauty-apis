@@ -44,3 +44,13 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   createSendToken(user, 201, res);
 });
+
+exports.login = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await authService.login({
+    email,
+    password,
+  });
+
+  createSendToken(user, 200, res);
+});

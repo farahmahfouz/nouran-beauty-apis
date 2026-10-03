@@ -24,3 +24,16 @@ exports.signUp = async ({
   });
   return user;
 };
+
+exports.login = async ({ email, password }) => {
+  if (!email || !password) {
+    throw new AppError('Please provide email and password', 400);
+  }
+  const user = await User.findOne({ email }).select('+password');
+
+  if (!user || !(await user.comparePassword(password, user.password))) {
+    throw new AppError('Incorrect email or password', 401);
+  }
+
+  return user;
+};
