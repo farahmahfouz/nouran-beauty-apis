@@ -19,6 +19,12 @@ exports.auth = async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
 
+    if (user.changedPasswordAfter(decoded.iat)) {
+      return next(
+        new AppError('Password recently changed. Please log in again', 401)
+      );
+    }
+
     if (!user) return next(new AppError('User no longer exists', 401));
 
     req.user = user;
