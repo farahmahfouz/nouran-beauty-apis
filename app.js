@@ -3,6 +3,9 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 
+const userRoutes = require('./src/routes/userRoutes');
+
+
 const app = express();
 
 app.use(cors());
@@ -21,5 +24,8 @@ app.get("/", (req, res) => {
     message: "Beauty Store API is running",
   });
 });
+
+// 🛣️ Routes
+app.use('/api/v1/users', userRoutes);
 
 module.exports = app;
